@@ -1,11 +1,11 @@
 # Patient Management System (Java OOP + Exception Handling)
 
-## 📌 Description
+##  Description
 This project is a simple Patient Management System developed using Java. It demonstrates Object-Oriented Programming (OOP) principles and robust exception handling to simulate real-world hospital operations.
 
 ---
 
-## 🚀 Features
+##  Features
 - Add patients and doctors
 - Create appointments
 - Prevent double booking
@@ -15,7 +15,7 @@ This project is a simple Patient Management System developed using Java. It demo
 
 ---
 
-## 🧠 OOP Concepts Used
+##  OOP Concepts Used
 - Encapsulation
 - Abstraction
 - Inheritance
@@ -23,7 +23,7 @@ This project is a simple Patient Management System developed using Java. It demo
 
 ---
 
-## ⚠️ Exception Handling
+##  Exception Handling
 ### Unchecked Exceptions:
 - IllegalArgumentException
 - InputMismatchException
@@ -34,14 +34,14 @@ This project is a simple Patient Management System developed using Java. It demo
 
 ---
 
-## ✅ Business Rules Enforced
+##  Business Rules Enforced
 - Doctors cannot be double booked at the same time
 - Appointments must be within working hours
 - Invalid inputs are handled gracefully
 
 ---
 
-## ▶️ How to Run
+##  How to Run
 1. Compile all `.java` files
 2. Run `Main.java`
 3. Follow menu instructions
