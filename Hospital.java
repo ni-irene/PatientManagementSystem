@@ -1,62 +1,61 @@
-import java.util.ArrayList;
+import java.util.*;
 import java.time.LocalTime;
 
 public class Hospital {
 
-        private ArrayList<Patient> patients = new ArrayList<>();
-        private ArrayList<Doctor> doctors = new ArrayList<>();
-        private ArrayList<Appointment> appointments = new ArrayList<>();
+    // One-to-Many: One hospital → many patients
+    // Using List because order matters and duplicates allowed
+    private List<Patient> patients = new ArrayList<>();
 
-        public void addPatient(Patient p) {
-            if (p == null) {
-                throw new IllegalArgumentException("Patient cannot be null");
-            }
-            patients.add(p);
+    // One-to-Many: One hospital → many doctors
+    private List<Doctor> doctors = new ArrayList<>();
+
+    // Key-Value: Doctor → List of appointments
+    // Using Map for fast lookup of appointments by doctor
+    private Map<Doctor, List<Appointment>> doctorAppointments = new HashMap<>();
+
+    public void addPatient(Patient p) {
+        patients.add(p);
+    }
+
+    public void addDoctor(Doctor d) {
+        doctors.add(d);
+
+        // Initialize doctor entry in map
+        doctorAppointments.put(d, new ArrayList<>());
+    }
+
+    public void createAppointment(Patient p, Doctor d, String date, LocalTime time) {
+
+        // Time validation
+        if (time.isBefore(LocalTime.of(9, 0)) || time.isAfter(LocalTime.of(17, 0))) {
+            throw new RuntimeException("Invalid time!");
         }
 
-        public void addDoctor(Doctor d) {
-            if (d == null) {
-                throw new IllegalArgumentException("Doctor cannot be null");
-            }
-            doctors.add(d);
-        }
+        List<Appointment> appointments = doctorAppointments.get(d);
 
-        public void createAppointment(Patient p, Doctor d, String date, LocalTime time) {
-
-            if (p == null || d == null) {
-                throw new IllegalArgumentException("Patient or Doctor is missing!");
-            }
-
-            //  Time validation
-            LocalTime start = LocalTime.of(9, 0);
-            LocalTime end = LocalTime.of(17, 0);
-
-            if (time.isBefore(start) || time.isAfter(end)) {
-                throw new InvalidTimeException("Invalid time! Allowed: 09:00 - 17:00");
-            }
-
-            //  Double booking check
-            for (Appointment a : appointments) {
-                if (a.getDoctor() == d &&
-                        a.getDate().equals(date) &&
-                        a.getTime().equals(time)) {
-
-                    throw new DoctorUnavailableException("Doctor already booked at this time!");
-                }
-            }
-
-            Appointment newAppointment = new Appointment(p, d, date, time);
-            appointments.add(newAppointment);
-
-            System.out.println(" Appointment created successfully!");
-        }
-
-        public void showAllAppointments() {
-            for (Appointment a : appointments) {
-                a.showAppointment();
-                System.out.println("-------------------");
+        // Check double booking
+        for (Appointment a : appointments) {
+            if (a.getDate().equals(date) && a.getTime().equals(time)) {
+                throw new RuntimeException("Doctor already booked!");
             }
         }
 
+        Appointment newApp = new Appointment(p, d, date, time);
+        appointments.add(newApp);
 
+        System.out.println("Appointment created!");
+    }
+
+    public void showAppointmentsByDoctor(Doctor d) {
+        List<Appointment> apps = doctorAppointments.get(d);
+
+        for (Appointment a : apps) {
+            a.showAppointment();
+        }
+    }
+
+    public void removePatient(Patient p) {
+        patients.remove(p);
+    }
 }
